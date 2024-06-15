@@ -1,0 +1,49 @@
+alias: Automation Battery Level 1.54
+description: Displaying battery level on a 1.54 epaper display. Time indicator in the bottom showing latest update.
+trigger:
+  - platform: time_pattern
+    minutes: /10
+condition:
+  - condition: time
+    after: "06:25:00"
+    before: "23:00:00"
+action:
+  - service: open_epaper_link.drawcustom
+    data:
+      background: white
+      rotate: 0
+      payload:
+        - type: icon
+          value: >-
+            {% set charge =
+            states('sensor.ferroamp_esm_23070128_state_of_charge') | int %} {%
+            if charge >= 90 %} mdi:battery {% elif charge >= 80 %}
+            mdi:battery-90 {% elif charge >= 70 %} mdi:battery-80 {% elif charge
+            >= 60 %} mdi:battery-70 {% elif charge >= 50 %} mdi:battery-60 {%
+            elif charge >= 40 %} mdi:battery-50 {% elif charge >= 30 %}
+            mdi:battery-40 {% elif charge >= 20 %} mdi:battery-30 {% elif charge
+            >= 10 %} mdi:battery-20 {% else %} mdi:battery-10 {% endif %}
+          x: 45
+          "y": 20
+          size: 55
+          color: black
+        - type: text
+          value: "{{ states('sensor.ferroamp_esm_23070128_state_of_charge') | int }}%"
+          font: ../../media/GothamRnd-Bold.ttf
+          x: 78
+          "y": 90
+          size: 40
+          color: black
+          anchor: mt
+        - type: text
+          value: "{{ now().strftime('%-d/%-m-%H:%M') }}"
+          font: ../../media/GothamRnd-Bold.ttf
+          x: 78
+          "y": 135
+          size: 15
+          color: black
+          anchor: mt
+    target:
+      entity_id:
+        - open_epaper_link.0000021F3CAC3413
+mode: restart
