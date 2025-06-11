@@ -24,14 +24,14 @@ action:
             mdi:battery-40 {% elif charge >= 20 %} mdi:battery-30 {% elif charge
             >= 10 %} mdi:battery-20 {% else %} mdi:battery-10 {% endif %}
           x: 45
-          "y": 20
+          y: 20
           size: 55
           color: black
         - type: text
           value: "{{ states('sensor.ferroamp_esm_23070128_state_of_charge') | int }}%"
           font: ../../media/GothamRnd-Bold.ttf
           x: 78
-          "y": 90
+          y: 90
           size: 40
           color: black
           anchor: mt
@@ -39,11 +39,10 @@ action:
           value: "{{ now().strftime('%-d/%-m-%H:%M') }}"
           font: ../../media/GothamRnd-Bold.ttf
           x: 78
-          "y": 135
+          y: 135
           size: 15
           color: black
           anchor: mt
     target:
-      entity_id:
-        - open_epaper_link.0000021F3CAC3413
+      device_id: ca4f69b9fcb09b22744730af00d791b2
 mode: restart
